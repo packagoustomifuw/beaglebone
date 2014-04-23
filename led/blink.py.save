@@ -1,0 +1,51 @@
+#!/usr/bin/python
+
+#import the Adafruit beaglebone IO library for GPIO
+import Adafruit_BBIO.GPIO as GPIO
+#import the Adafruit PWM library
+import Adafruit_BBIO.PWM as PWM
+#import the time library
+import time
+import math
+
+GPIO.setup("P8_11", GPIO.IN)
+
+#LED alternating
+def alternate(channel):
+
+	#Setup P8 pins 10 and 12 as output
+	GPIO.setup("P8_10", GPIO.OUT)
+	GPIO.setup("P8_12", GPIO.OUT)
+	#Setup P8 pin 11 as input
+	GPIO.setup("P8_11", GPIO.IN)
+
+	#begin loop
+	while True:
+		#start the for loop
+		x = 1.0
+		while x < 1001:
+		#turn on LED
+			if x % 2 == 0:
+				GPIO.output("P8_12", GPIO.HIGH)
+				GPIO.output("P8_10", GPIO.LOW)
+			else:
+				GPIO.output("P8_12", GPIO.LOW)
+				GPIO.output("P8_10", GPIO.HIGH)
+			#delay
+			time.sleep(3/x)
+			x += 1
+		while x > 0:
+			if x % 2 == 0:
+				GPIO.output("P
+
+GPIO.add_event_detect("P8_11", GPIO.BOTH, callback=alternate)
+ if x % 2 == 0:
+                                GPIO.output("P8_12", GPIO.HIGH)
+                                GPIO.output("P8_10", GPIO.LOW)
+                        else:
+                                GPIO.output("P8_12", GPIO.LOW)
+                                GPIO.output("P8_10", GPIO.HIGH)
+                        #delay
+                        time.sleep(3/x)
+                        x += 1
+

@@ -8,8 +8,11 @@ import Adafruit_BBIO.PWM as PWM
 import time
 import math
 
-#Setup P8 pin 9 as input
-GPIO.setup("P8_9", GPIO.IN)
+button = "P8_11"
+
+#Setup P8 pin 11 as input
+GPIO.setup(button, GPIO.IN)
+
 
 while True:
 
@@ -33,7 +36,8 @@ while True:
 				#delay
 				time.sleep(3/x)
 				x += 1
-			GPIO.add_event_detect("P8_9", GPIO.BOTH, callback=off)
+				GPIO.add_event_detect(button, GPIO.RISING)
+				GPIO.add_event_callback(button, off)
 			while x > 0:
 				if x % 2 == 0:
         	                        GPIO.output("P8_12", GPIO.HIGH)
@@ -44,7 +48,8 @@ while True:
                 	        #delay
                         	time.sleep(3/x)
 	                        x -= 1
-			GPIO.add_event_detect("P8_9", GPIO.BOTH, callback=off)
+				GPIO.add_event_detect(button, GPIO.RISING)
+                                GPIO.add_event_callback(button, off)
 
 	def off():
 		#Setup P8 pins 10 and 12 as output
@@ -54,4 +59,6 @@ while True:
 		GPIO.output("P8_10", GPIO.LOW)
 
 
-	GPIO.add_event_detect("P8_9", GPIO.BOTH, callback=alternate)
+	GPIO.add_event_detect(button, GPIO.RISING)
+	if GPIO.event_detected(button):
+		GPIO.add_event_callback(button, alternate)

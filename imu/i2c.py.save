@@ -1,0 +1,8 @@
+#!/usr/bin/python
+
+from Adafruit_I2C import Adafruit_I2C
+
+
+#while True:
+#   print Adafruit_I2C.readS16(Adafruit_I2C, SDA)
+#   time.sleep(.5)
