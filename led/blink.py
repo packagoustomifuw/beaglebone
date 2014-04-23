@@ -8,26 +8,22 @@ import Adafruit_BBIO.PWM as PWM
 import time
 import math
 
-#Setup P8 pin 11 as input
-GPIO.setup("P8_11", GPIO.IN)
+#Setup P8 pin 9 as input
+GPIO.setup("P8_9", GPIO.IN)
 
+while True:
 
-def alternate(channel):
+	def alternate():
 
-	#Setup P8 pins 10 and 12 as output
-	GPIO.setup("P8_10", GPIO.OUT)
-	GPIO.setup("P8_12", GPIO.OUT)
+		#Setup P8 pins 10 and 12 as output
+		GPIO.setup("P8_10", GPIO.OUT)
+		GPIO.setup("P8_12", GPIO.OUT)
 
-	#begin loop
-	while True:
-		#check if switch is pressed
-		if GPIO.input("P8_11"):
-			#start the for loop
-			#GPIO.output("P8_10", GPIO.HIGH)
-			#GPIO.output("P8_12", GPIO.HIGH)
+		#begin loop
+		while True:
 			x = 1.0
 			while x < 1001:
-				#if pressed, turn on LED
+			#turn on LED
 				if x % 2 == 0:
 					GPIO.output("P8_12", GPIO.HIGH)
 					GPIO.output("P8_10", GPIO.LOW)
@@ -36,12 +32,26 @@ def alternate(channel):
 					GPIO.output("P8_10", GPIO.HIGH)
 				#delay
 				time.sleep(3/x)
-				#time.sleep(10/math.exp(x))
-				#TODO: make this increase exponentially
 				x += 1
-		else:
-			#if not pressed, leave LED off
-			GPIO.output("P8_12", GPIO.LOW)
-			GPIO.output("P8_10", GPIO.LOW)
+			GPIO.add_event_detect("P8_9", GPIO.BOTH, callback=off)
+			while x > 0:
+				if x % 2 == 0:
+        	                        GPIO.output("P8_12", GPIO.HIGH)
+                	                GPIO.output("P8_10", GPIO.LOW)
+                        	else:
+	                                GPIO.output("P8_12", GPIO.LOW)
+        	                        GPIO.output("P8_10", GPIO.HIGH)
+                	        #delay
+                        	time.sleep(3/x)
+	                        x -= 1
+			GPIO.add_event_detect("P8_9", GPIO.BOTH, callback=off)
 
-GPIO.add_event_detect("P8_11", GPIO.BOTH, callback=alternate)
+	def off():
+		#Setup P8 pins 10 and 12 as output
+	        GPIO.setup("P8_10", GPIO.OUT)
+        	GPIO.setup("P8_12", GPIO.OUT)
+		GPIO.output("P8_12", GPIO.LOW)
+		GPIO.output("P8_10", GPIO.LOW)
+
+
+	GPIO.add_event_detect("P8_9", GPIO.BOTH, callback=alternate)
